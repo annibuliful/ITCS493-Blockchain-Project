@@ -25,7 +25,7 @@ class Blockchain {
 
     setTimeout(() => {
       const minedTransaction = this.pendingTransactions[0].toObject();
-      this.pendingTransactions.pop();
+      this.pendingTransactions.shift();
       const fromAddress = minedTransaction.from;
       const minerTransaction = new Transaction(fromAddress, "miner", this.fee);
       const minerBlock = new Block(minerTransaction.toObject());
@@ -44,13 +44,12 @@ class Blockchain {
     this.pendingTransactions.push(transaction);
   }
   addNewBlock(block) {
-    // console.log(block);
     block.previousHash = this.lastestBlock().hash;
     block.data.amount = block.data.amount - this.fee;
     block.hash = block.generateHash();
     this.chain.push({ ...block, nonce: this.nonce });
     this.nonce++;
-    // console.log(`${block.hash} is added \n`);
+    console.log(`${block.hash} is added \n`);
   }
 
   getBalance(address) {
